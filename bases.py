@@ -1,6 +1,7 @@
 #!python
 
 import string
+import math
 
 
 def decode(str_num, base):
@@ -9,8 +10,8 @@ def decode(str_num, base):
     str_num -- string representation of number in given base
     base -- base of given number
     """
-    assert 2 <= base <= 36
-    # TODO: Decode number
+    return int(str_num, base)
+
 
 def encode(num, base):
     """
@@ -18,13 +19,29 @@ def encode(num, base):
     num -- the number in base 10
     base -- base to convert to
     """
+    result = num
+    ret_num = []
+
+    while result != 0:
+        remainder = (math.modf((result / float(base)))[0]) * base
+        result = result / base
+
+        if remainder >= 10:
+            ret_num.append(chr(97 + int(remainder - 10)))
+        else:
+            ret_num.append(str(int(remainder)))
+
+    return "".join(ret_num[::-1])
     assert 2 <= base <= 36
     # TODO: Encode number
+
 
 def convert(str_num, base1, base2):
     """
     Convert given number from base1 to base2.
     """
+
+    return encode(decode(str_num, base1), base2)
     assert 2 <= base1 <= 36
     assert 2 <= base2 <= 36
     # TODO: Convert number
@@ -44,4 +61,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    print(convert('3243', 16, 2))
