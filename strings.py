@@ -1,6 +1,7 @@
 #!python
 
 import string
+import re
 
 
 def is_palindrome(text):
@@ -14,17 +15,32 @@ def is_palindrome(text):
 
 
 def is_palindrome_iterative(text):
-    # TODO: implement the is_palindrome function iteratively here
-    pass
-    # once implemented, change is_palindrome to call is_palindrome_iterative
-    # to verify that your iterative implementation passes all tests
+    if text == '':
+        return True
+
+    p = re.compile('[^a-zA-Z]')
+    text = p.sub('', text)
+
+    left = 0
+    right = len(text) - 1
+
+    is_different_case = ord(text[left])\
+        in [ord(text[right]) - 32, ord(text[right]) + 32]\
+        or ord(text[right]) in [ord(text[left]) - 32, ord(text[left]) + 32]
+    is_same_case = text[left] == text[right]
+
+    while left < right:
+        if not is_different_case and not is_same_case:
+            return False
+        else:
+            left += 1
+            right -= 1
+    return True
 
 
 def is_palindrome_recursive(text, left=None, right=None):
-    # TODO: implement the is_palindrome function recursively here
-    pass
-    # once implemented, change is_palindrome to call is_palindrome_recursive
-    # to verify that your iterative implementation passes all tests
+    if left > right:
+        return False
 
 
 def main():
@@ -42,4 +58,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    print(is_palindrome_iterative('BB'))
