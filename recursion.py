@@ -1,6 +1,7 @@
 #!python
 
 import unittest
+from functools import reduce
 
 
 def factorial(n):
@@ -13,17 +14,10 @@ def factorial(n):
 
 
 def factorial_iterative(n):
-    # TODO: implement the factorial function iteratively here
     if type(n) is not int or n < 0:
         raise ValueError
 
-    total = 1
-    for i in range(1, n+1):
-        total *= i
-
-    return total
-    # once implemented, change factorial (above) to call factorial_iterative
-    # to verify that your iterative implementation passes all tests below
+    return reduce(lambda x, y: x * y, range(1, n + 1), 1)
 
 
 def factorial_recursive(n):
@@ -37,3 +31,6 @@ def factorial_recursive(n):
     elif n > 1:
         # call function recursively
         return n * factorial_recursive(n - 1)
+
+
+print(factorial_iterative(15))
