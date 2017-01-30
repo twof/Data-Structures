@@ -10,7 +10,7 @@ def is_palindrome(text):
     # implement is_palindrome_iterative and is_palindrome_recursive below, then
     # change this to call your implementation to verify it passes all tests
     assert isinstance(text, str)
-    return is_palindrome_iterative(text)
+    return is_palindrome_recursive(text)
     # return is_palindrome_recursive(text)
 
 
@@ -39,8 +39,25 @@ def is_palindrome_iterative(text):
 
 
 def is_palindrome_recursive(text, left=None, right=None):
-    if left > right:
+    if text == '' or left > right:
+        return True
+
+    if left is None:
+        p = re.compile('[^a-zA-Z]')
+        text = p.sub('', text)
+
+        left = 0
+        right = len(text) - 1
+
+    is_different_case = ord(text[left])\
+        in [ord(text[right]) - 32, ord(text[right]) + 32]\
+        or ord(text[right]) in [ord(text[left]) - 32, ord(text[left]) + 32]
+    is_same_case = text[left] == text[right]
+
+    if not is_different_case and not is_same_case:
         return False
+    else:
+        return is_palindrome_recursive(text, left + 1, right - 1)
 
 
 def main():
@@ -58,4 +75,4 @@ def main():
 
 
 if __name__ == '__main__':
-    print(is_palindrome_iterative('BB'))
+    print(is_palindrome_recursive('A'))
