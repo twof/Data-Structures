@@ -30,10 +30,8 @@ class HashTable(object):
         self._lucas_numbers.enqueue(3)
 
         self._lucas_len = 2
-        self.buckets = [Linked_List() for i in range(self.current_buckets)]
+        self.buckets = [None for i in range(self.current_buckets)]
         self.current_index = 0
-        self.current_node = self.buckets[0].head
-        self.optimizing = False
 
     # O(1)
     def __repr__(self):
@@ -43,18 +41,6 @@ class HashTable(object):
     # O(1)
     def __iter__(self):
         return self
-
-    # O()
-    def __next__(self):
-        node_to_return = self.current_node
-        if self.current_index == len(self.buckets)-1:
-            raise StopIteration
-        else:
-            try:
-                self.current_node = self.buckets[self.current_index].__next__()
-            except StopIteration:
-                self.current_index += 1
-                return node_to_return
 
     # O(1)
     def _bucket_index(self, key):
@@ -66,8 +52,9 @@ class HashTable(object):
         """Return the length of this hash table by traversing its buckets"""
         total = 0
 
-        for list in self.buckets:
-            total += list.length()
+        for bucket in self.buckets:
+            if bucket:
+                total += bucket.length()
 
         return total
 
@@ -96,11 +83,13 @@ class HashTable(object):
     def set(self, key, value):
         """Insert or update the given key with its associated value"""
         bucket = self.buckets[self._bucket_index(key)]
-        bucket.upsert_first([key, value], lambda item: item[0] == key)
 
-        if bucket.length() > 1 and not self.optimizing:
-            self.optimizing = True
-            self.optimize_buckets()
+        if bucket:
+            item_list = self.items()
+            item_list.append([key, value])
+            self.optimize_buckets(item_list)
+        else:
+            self.buckets[self._bucket_index(key)] = Linked_List([[key, value]])
 
     # O(n)
     def delete(self, key):
@@ -138,45 +127,33 @@ class HashTable(object):
         item_list = []
 
         for bucket in self.buckets:
-            bucket_list = bucket.as_list()
-            item_list.extend(bucket_list)
+            if bucket:
+                bucket_list = bucket.as_list()
+                item_list.extend(bucket_list)
 
         return item_list
 
     # defaults to buckets = number of items in the table
-    def resize_table(self, size=None):
+    def resize_table(self, item_list, size=None):
         if size is None:
             size = self.length()
 
-        item_List = self.items()
+        self.buckets = [None for i in range(size)]
 
-        self.buckets = [Linked_List() for i in range(size)]
-        for item in item_List:
+        for item in item_list:
             self.set(item[0], item[1])
 
-    def optimize_buckets(self):
-        size = self.length()
+    def optimize_buckets(self, item_list):
+        size = self._next_prime()
 
-        while not self._is_optimized():
-            # prev_size = size
-            #
-            # while size < prev_size * 1.25:
-            size = self._next_prime()
-
-            self.resize_table(size)
-        self.optimizing = False
+        self.resize_table(item_list, size)
 
     def print_table(self):
         for index, bucket in enumerate(self.buckets):
             print("bucket"+str(index))
-            bucket.print_list()
 
-    def _is_optimized(self):
-        for bucket in self.buckets:
-            if bucket.length() > 1:
-                return False
-
-        return True
+            if bucket:
+                bucket.print_list()
 
     def _next_prime(self):
         queue_len = len(self._lucas_numbers)
@@ -202,11 +179,9 @@ class HashTable(object):
 
 if __name__ == '__main__':
     ht = HashTable(2)
-    values = []
+
     for i in range(1000):
-        values.append(''.join(random.choice(string.ascii_uppercase
-                                            + string.digits)
-                              for _ in range(20)))
-    for val in values:
-        ht.set(val, True)
+        ht.set(''.join(random.choice(string.ascii_uppercase
+                                     + string.digits)
+                       for _ in range(20)), True)
     ht.print_table()
