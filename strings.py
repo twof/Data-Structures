@@ -1,12 +1,14 @@
-#!python
-
-import string
+"""Functions in this file."""
+# import string
 import re
 
 
-def is_palindrome(text):
-    """A string of characters is a palindrome if it reads the same forwards and
-    backwards, ignoring punctuation, whitespace, and letter casing"""
+def is_palindrome(text: str) -> bool:
+    """Check if a string is a palindrome.
+
+    Keyword arguments:
+    text -- string to check for a palindrome
+    """
     # implement is_palindrome_iterative and is_palindrome_recursive below, then
     # change this to call your implementation to verify it passes all tests
     assert isinstance(text, str)
@@ -14,7 +16,12 @@ def is_palindrome(text):
     # return is_palindrome_recursive(text)
 
 
-def is_palindrome_iterative(text):
+def is_palindrome_iterative(text: str) -> bool:
+    """Check if a string is a palindrome using an iterative method.
+
+    Keyword arguments:
+    text -- string to check for a palindrome
+    """
     if text == '':
         return True
 
@@ -38,7 +45,14 @@ def is_palindrome_iterative(text):
     return True
 
 
-def is_palindrome_recursive(text, left=None, right=None):
+def is_palindrome_recursive(text: str,
+                            left: int=None,
+                            right: int=None) -> bool:
+    """Check if a string is a palindrome using a recusive method.
+
+    Keyword arguments:
+    text -- string to check for a palindrome
+    """
     if text == '' or left > right:
         return True
 
@@ -60,19 +74,24 @@ def is_palindrome_recursive(text, left=None, right=None):
         return is_palindrome_recursive(text, left + 1, right - 1)
 
 
-def main():
-    import sys
-    args = sys.argv[1:]  # Ignore script file name
-    if len(args) > 0:
-        for arg in args:
-            is_pal = is_palindrome(arg)
-            result = 'PASS' if is_pal else 'FAIL'
-            str_not = 'a' if is_pal else 'not a'
-            print('{}: {} is {} palindrome'.format(result, repr(arg), str_not))
-    else:
-        print('Usage: {} string1 string2 ... stringN'.format(sys.argv[0]))
-        print('  checks if each argument given is a palindrome')
+def string_contains_substring_iterative(string: str, substring: str) -> bool:
+    """Check if a string contains a substring using an iterative method.
+
+    Keyword arguments:
+    string - base string that may or maynot contain a substring
+    substring - string that may or maynot be contained in string
+    """
+    if len(string) < len(substring):
+        return False
+
+    for index in range(len(string)):
+        if index + len(substring) < len(string)\
+                and string[index:(index + len(substring))] == substring:
+            return True
+    return False
 
 
 if __name__ == '__main__':
-    print(is_palindrome_recursive('A'))
+    print(string_contains_substring_iterative('cathether', 'cat'))
+    string_contains_substring_iterative("string", "substring")
+    is_palindrome_iterative("hello")
