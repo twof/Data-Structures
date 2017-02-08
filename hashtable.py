@@ -1,4 +1,3 @@
-from linked_list import Linked_List
 from cappedQueue import Queue
 import string
 import random
@@ -89,7 +88,7 @@ class HashTable(object):
             item_list.append([key, value])
             self.optimize_buckets(item_list)
         else:
-            self.buckets[self._bucket_index(key)] = Linked_List([[key, value]])
+            self.buckets[self._bucket_index(key)] = [key, value]
 
     # O(n)
     def delete(self, key):
@@ -128,7 +127,7 @@ class HashTable(object):
 
         for bucket in self.buckets:
             if bucket:
-                bucket_list = bucket.as_list()
+                bucket_list = [bucket]
                 item_list.extend(bucket_list)
 
         return item_list
