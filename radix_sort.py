@@ -14,7 +14,6 @@ def radix_sort(arr):
         arr = [item for sublist in buckets for item in sublist]
 
         is_sorted = True
-
         for bucket in buckets[1:]:
             if bucket:
                 is_sorted = False
@@ -25,5 +24,5 @@ def radix_sort(arr):
     return arr
 
 
-a = random.sample(range(100), 10)
-print(radix_sort(a))
+a = random.sample(range(10), 10)
+radix_sort(a)
