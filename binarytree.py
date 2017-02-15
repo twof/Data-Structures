@@ -30,8 +30,12 @@ class _Side(Enum):
 
 class BinarySearchTree:
 
-    def __init__(self):
+    def __init__(self, arr=None):
         self.head = None
+
+        if arr is not None:
+            for item in arr:
+                self.insert(item)
 
     def search(self, value):
         current_node = self.head
@@ -115,7 +119,7 @@ class BinarySearchTree:
         self.preorder_traversal(node.left)
         self.preorder_traversal(node.right)
 
-    def inorder_traversal(self, node):
+    def inorder_traversal(self, node=-1, accumulator=[]):
         """Recursive in order traversal starting from an arbitrary _Node.
 
         Complexity: O(n)
@@ -123,9 +127,12 @@ class BinarySearchTree:
         if node is None:
             return
 
-        self.inorder_traversal(node.left)
-        print(node.value, end=', ')
-        self.inorder_traversal(node.right)
+        if node == -1:
+            node = self.head
+
+        self.inorder_traversal(node.left, accumulator)
+        accumulator.append(node.value)
+        self.inorder_traversal(node.right, accumulator)
 
     def postorder_traversal(self, node):
         """Recursive post order traversal starting from an arbitrary _Node.
@@ -139,7 +146,10 @@ class BinarySearchTree:
         self.postorder_traversal(node.right)
         print(node.value, end=', ')
 
-
+    def inorder_list(self):
+        arr = []
+        self.inorder_traversal(accumulator=arr)
+        return arr
 
 
 def main():
@@ -162,15 +172,8 @@ def main():
     print(bst.search(12))
     print(bst.search(8))
 
-    print("Preorder: ")
-    bst.preorder_traversal(bst.head)
-    print('\n', end='')
     print("In Order: ")
-    bst.inorder_traversal(bst.head)
-    print('\n', end='')
-    print("Postorder: ")
-    bst.postorder_traversal(bst.head)
-
+    print(bst.inorder_list())
 
 if __name__ == '__main__':
     main()

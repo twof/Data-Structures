@@ -24,5 +24,5 @@ def radix_sort(arr):
     return arr
 
 
-a = random.sample(range(10), 10)
-radix_sort(a)
+a = random.sample(range(1000), 10)
+print(radix_sort(a))
