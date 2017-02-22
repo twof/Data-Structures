@@ -5,9 +5,11 @@ class MinHeap(object):
     """A MinHeap is an unordered collection with access to its minimum item,
     and provides efficient methods for insertion and removal of its minimum."""
 
-    def __init__(self):
+    def __init__(self, arr=None):
         """Initialize this min heap with an empty list of items"""
         self.items = []
+        for item in arr:
+            self.insert(item)
 
     def __repr__(self):
         """Return a string representation of this min heap"""
