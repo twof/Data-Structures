@@ -1,12 +1,23 @@
-from multiprocessing import Pool
+from concurrent.futures import ThreadPoolExecutor, as_completed, wait
+import urllib.request
+import aiohttp
+import asyncio
 import random
 
-arr = random.sample(range(100), 10)
+loop = asyncio.get_event_loop()
+client = aiohttp.ClientSession(loop=loop)
 
-def h(item):
-    return item*item
+
+async def h():
+    url = "http://catfacts-api.appspot.com/api/facts"
+    async with client.get(url) as response:
+        assert response.status == 200
+        print(await response.read())
+        return await response.read()
 
 
 if __name__ == '__main__':
-    with Pool(5) as p:
-        print(p.map(h, arr))
+    print("hello")
+    loop.run_until_complete(h())
+    loop.close()
+    client.close()

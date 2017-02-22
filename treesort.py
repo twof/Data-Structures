@@ -1,10 +1,11 @@
-from binarytree import BinarySearchTree
+import builtins
 import random
+from binarytree import BinarySearchTree
+
+def tree_sort(self):
+    return BinarySearchTree(self).inorder_list()
 
 
-def tree_sort(arr):
-    return BinarySearchTree(arr).inorder_list()
+setattr(builtins.list, "tree_sort", tree_sort)
 
-
-a = random.sample(range(100), 10)
-print(tree_sort(a))
+print(random.sample(range(100), 10).tree_sort())

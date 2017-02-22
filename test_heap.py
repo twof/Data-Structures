@@ -75,6 +75,7 @@ class TestMinHeap(unittest.TestCase):
         assert heap.size() == len(items)
         sorted_items = sorted(items)
         for index, item in enumerate(sorted_items):
+            print(heap.items)
             min_item = heap.remove_min()
             assert sorted_items[index] == min_item
         assert heap.size() == 0
@@ -100,19 +101,19 @@ class TestMinHeap(unittest.TestCase):
 
     def test_child_index(self):
         heap = MinHeap()
-        assert heap._left_child_index(0) ==  1
+        assert heap._left_child_index(0) == 1
         assert heap._right_child_index(0) == 2
-        assert heap._left_child_index(1) ==  3
+        assert heap._left_child_index(1) == 3
         assert heap._right_child_index(1) == 4
-        assert heap._left_child_index(2) ==  5
+        assert heap._left_child_index(2) == 5
         assert heap._right_child_index(2) == 6
-        assert heap._left_child_index(3) ==  7
+        assert heap._left_child_index(3) == 7
         assert heap._right_child_index(3) == 8
-        assert heap._left_child_index(4) ==  9
+        assert heap._left_child_index(4) == 9
         assert heap._right_child_index(4) == 10
-        assert heap._left_child_index(5) ==  11
+        assert heap._left_child_index(5) == 11
         assert heap._right_child_index(5) == 12
-        assert heap._left_child_index(6) ==  13
+        assert heap._left_child_index(6) == 13
         assert heap._right_child_index(6) == 14
 
 
